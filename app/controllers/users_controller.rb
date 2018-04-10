@@ -1,6 +1,6 @@
 class UsersController < ApplicationController
   def show
-    @hello = "Привет askfm"
+    @hello = "Привет askme"
 
   end
 end
