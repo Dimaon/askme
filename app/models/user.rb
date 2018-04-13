@@ -8,6 +8,7 @@ class User < ApplicationRecord
   has_many :questions
 
   validates :email, :username, presence: true
+  before_validation { username.downcase! unless username.nil? }
   validates :email, :username, uniqueness: true
   validates :username, length: { maximum: 40 }
   validates :username, format: { with: /\A[\w]+\z/ }
@@ -20,7 +21,6 @@ class User < ApplicationRecord
   validates_confirmation_of :password
 
   before_save :encrypt_password
-  before_validation { username.downcase! }
 
   def encrypt_password
     if self.password.present?
