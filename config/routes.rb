@@ -2,7 +2,7 @@ Rails.application.routes.draw do
   root 'users#index'
 
   resources :users, except: [:destroy]
-  resources :questions
+  resources :questions, except: [:show, :new, :index]
   resources :sessions, only: [:new, :create, :destroy]
 
   # Синонимы для урлов
