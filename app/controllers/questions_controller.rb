@@ -10,6 +10,7 @@ class QuestionsController < ApplicationController
   # POST /questions
   def create
     @question = Question.new(question_params)
+    @question.author = current_user if current_user.present?
 
     if @question.save
       redirect_to user_path(@question.user), notice: 'Вопрос задан'
@@ -35,7 +36,6 @@ class QuestionsController < ApplicationController
   end
 
   private
-  # Use callbacks to share common setup or constraints between actions.
   def load_question
     @question = Question.find(params[:id])
   end
