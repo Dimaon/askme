@@ -35,6 +35,7 @@
         <%= f.text_field :header_color, class: 'form-text-field' %>
       </div>
 
+
       <div class="buffer-top-large buffer-bottom">
         Если не хотите менять пароль — оставьте эти поля пустыми!
       </div>
@@ -51,6 +52,13 @@
 
       <div class="form-action buffer-top">
         <%= f.submit 'Сохранить', class: 'button button-dark button-small' %>
+      </div>
+    <% end %>
+
+    <% if current_user %>
+      <div class="question-actions">
+        <%= link_to fa_icon('trash-o', 'Удалить профиль'), user_path(current_user),
+                    method: :delete, data: {confirm: 'Точно удалить свой профиль?'} %>
       </div>
     <% end %>
   </div>

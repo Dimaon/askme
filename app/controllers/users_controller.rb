@@ -46,6 +46,12 @@ class UsersController < ApplicationController
     @unanswered_count = @questions_count - @answers_count
   end
 
+  def destroy
+    if @user == current_user
+      redirect_to root_path, notice: "Ваша учетная запись удалена" if @user.delete
+    end
+  end
+
   private
   def user_params
     params.require(:user).permit(:email, :password, :password_confirmation, :name, :username, :avatar_url, :header_color)

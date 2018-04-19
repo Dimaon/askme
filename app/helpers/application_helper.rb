@@ -7,8 +7,8 @@ module ApplicationHelper
     end
   end
 
-  def fa_icon(icon_class)
-    content_tag 'span', '', class: "fa fa-#{icon_class}"
+  def fa_icon(icon_class, text='')
+    content_tag 'span', "#{text}", class: "fa fa-#{icon_class}"
   end
 
   def sklonenie(number, krokodil, krokodila, krokodilov)
