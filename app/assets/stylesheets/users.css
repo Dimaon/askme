@@ -52,6 +52,10 @@
   margin-left: 10px;
   background: #D9E6E5;
 }
+.user-header a.color-contrast {
+  color:#fff;
+  text-shadow: 1px 1px 1px #000;
+}
 
 @media (max-width: 960px) {
   .user-question-form {
