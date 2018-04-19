@@ -5,7 +5,7 @@ class User < ApplicationRecord
   ITERATIONS = 20000
   DIGEST = OpenSSL::Digest::SHA256.new
 
-  has_many :questions
+  has_many :questions, dependent: :destroy
 
   validates :email, :username, presence: true
   before_validation { username.downcase! unless username.nil? }
