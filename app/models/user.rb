@@ -12,7 +12,7 @@ class User < ApplicationRecord
   validates :email, :username, uniqueness: true
   validates :username, length: { maximum: 40 }
   validates :username, format: { with: /\A[\w]+\z/ }
-  validates :email, format: { with: /\A[a-z\d_+.\-]+@[a-z\d\-]+(\.[a-z\d\-]+)*\.[a-z]+\z/,
+  validates :email, format: { with: /\A[a-z\d_+.\-]+@[a-zvj;tn\d\-]+(\.[a-z\d\-]+)*\.[a-z]+\z/,
     message: "incorrect email" }
   validates :header_color, format: { with: /\A#(?:[0-9a-fA-F]{3}){1,2}+\z/}, allow_blank: true
 
