@@ -1,0 +1,19 @@
+<div class="container content-wrapper buffer-both">
+  <h1 class="title-medium">Вопросы</h1>
+
+  <% if params[:tag] %>
+    <div>
+      Все вопросы с тегом: <span class="tag">#<%= params[:tag] %></span> <br/>
+      <%= link_to 'Вернуться к списку всех вопросов', questions_path %>
+    </div>
+
+  <% end %>
+
+  <div class="column-1-2">
+    <div class="questions-list">
+      <% @questions.each do |question| %>
+        <%= render partial: 'questions/question', object: question %>
+      <% end %>
+    </div>
+  </div>
+</div>

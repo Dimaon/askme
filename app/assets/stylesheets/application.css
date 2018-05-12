@@ -32,3 +32,12 @@
  * они тоже попали бы в конечный стилевой файл.
  *= require_self
  */
+
+.tag, .tag a {
+  display: inline-block;
+  background: #b6e2aa;
+  color: #023300;
+  padding: 2px 5px;
+  border-radius: 5px;
+  font-size: 12px;
+}
