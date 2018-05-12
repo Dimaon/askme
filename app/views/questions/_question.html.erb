@@ -32,5 +32,11 @@
                     method: :delete, data: {confirm: 'Точно удалить вопрос?'} %>
       </div>
     <% end %>
+
+    <div class="tags">
+      <% uniq_hashtags(question).each do |tag| %>
+        <span class="tag"><%= link_to tag.tag, questions_search_path(tag: tag.tag.delete('#'))  %></span>
+      <% end %>
+    </div>
   </div>
 </div>

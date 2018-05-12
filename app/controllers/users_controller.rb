@@ -5,6 +5,7 @@ class UsersController < ApplicationController
 
   def index
     @users = User.all
+    @hashtags = Hashtag.all.to_a.uniq{|h| h.tag}
   end
 
   def new
