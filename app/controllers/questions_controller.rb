@@ -20,8 +20,7 @@ class QuestionsController < ApplicationController
     @question.author = current_user if current_user.present?
 
     if @question.save
-      create_tags(@question.text)
-      create_tags(@question.answer)
+      create_tags_qa(@question.text, @question.answer)
       redirect_to user_path(@question.user), notice: 'Вопрос задан'
     else
       render :edit
@@ -30,8 +29,7 @@ class QuestionsController < ApplicationController
 
   def update
     if @question.update(question_params)
-      create_tags(@question.text)
-      create_tags(@question.answer)
+      create_tags_qa(@question.text, @question.answer)
       redirect_to user_path(@question.user), notice: 'Вопрос сохранен'
     else
       render :edit
@@ -46,10 +44,12 @@ class QuestionsController < ApplicationController
   end
 
   private
+
   def load_question
     @question = Question.find(params[:id])
   end
 
+  # Принимает текст на вход, если текст содержит #тег, то он сохраняется в модель Hashtag
   def create_tags(text)
     hash_tags_arr = text.scan(/#[^\!\?\.\s]+/)
 
@@ -58,6 +58,12 @@ class QuestionsController < ApplicationController
         @question.hashtags << Hashtag.create(tag: tag)
       end
     end
+  end
+
+  # Вызывает метод create_tags для текста вопроса и теста ответа
+  def create_tags_qa(question, answer)
+    create_tags(question) unless question.nil?
+    create_tags(answer) unless answer.nil?
   end
 
   def question_params
