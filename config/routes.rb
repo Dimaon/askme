@@ -3,12 +3,9 @@ Rails.application.routes.draw do
 
   resources :users
   resources :questions, except: [:show, :new]
-  resources :sessions, only: [:new, :create, :destroy]
+  resource :session, only: [:new, :create, :destroy]
 
   # Синонимы для урлов
-  get 'sign_up' => 'users#new'
-  get 'log_out' => 'sessions#destroy'
-  get 'log_in' => 'sessions#new'
   get 'questions_search' => 'questions#search'
 
 end
