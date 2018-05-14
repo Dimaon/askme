@@ -22,3 +22,5 @@
 
 .byebug_history
 .idea
+
+/config/local_env.yml

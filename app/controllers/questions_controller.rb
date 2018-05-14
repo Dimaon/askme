@@ -19,7 +19,7 @@ class QuestionsController < ApplicationController
     @question = Question.new(question_params)
     @question.author = current_user if current_user.present?
 
-    if @question.save
+    if check_captcha(@question) && @question.save
       create_tags_qa(@question.text, @question.answer)
       redirect_to user_path(@question.user), notice: 'Вопрос задан'
     else
@@ -79,5 +79,13 @@ class QuestionsController < ApplicationController
 
   def authorize_user
     reject_user unless @question.user == current_user
+  end
+
+  def check_captcha(model)
+    if current_user.present?
+      true
+    else
+      verify_recaptcha(model: model)
+    end    
   end
 end
