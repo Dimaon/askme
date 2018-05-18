@@ -16,7 +16,7 @@ class Question < ApplicationRecord
   private
 
   def update_tags
-    text = self.text + " " + self.answer
+    text = self.text.to_s + " " + self.answer.to_s
     hash_tags_arr = text.scan(/#[^\!\?\.\s]+/)
 
     # Проверяем, есть ли вообще теги в тексте
