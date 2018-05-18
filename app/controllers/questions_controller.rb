@@ -4,6 +4,7 @@ class QuestionsController < ApplicationController
   before_action :authorize_user, except: [:create, :index, :search]
 
   def edit
+    render :index unless @question
   end
 
   def search
@@ -20,7 +21,6 @@ class QuestionsController < ApplicationController
     @question.author = current_user if current_user.present?
 
     if check_captcha(@question) && @question.save
-      create_tags_qa(@question.text, @question.answer)
       redirect_to user_path(@question.user), notice: 'Вопрос задан'
     else
       render :edit
@@ -29,7 +29,6 @@ class QuestionsController < ApplicationController
 
   def update
     if @question.update(question_params)
-      create_tags_qa(@question.text, @question.answer)
       redirect_to user_path(@question.user), notice: 'Вопрос сохранен'
     else
       render :edit
@@ -49,22 +48,9 @@ class QuestionsController < ApplicationController
     @question = Question.find(params[:id])
   end
 
-  # Принимает текст на вход, если текст содержит #тег, то он сохраняется в модель Hashtag
-  def create_tags(text)
-    hash_tags_arr = text.scan(/#[^\!\?\.\s]+/)
-
-    if hash_tags_arr.any?
-      hash_tags_arr.each do |tag|
-        @question.hashtags << Hashtag.create(tag: tag)
-      end
-    end
-  end
-
-  # Вызывает метод create_tags для текста вопроса и теста ответа
-  def create_tags_qa(question, answer)
-    create_tags(question) unless question.nil?
-    create_tags(answer) unless answer.nil?
-  end
+  # def add_hashtags
+  #   @question.create_tags_qa(@question.text, @question.answer)
+  # end
 
   def question_params
     # Защита от уязвимости: если текущий пользователь — адресат вопроса,
@@ -86,6 +72,6 @@ class QuestionsController < ApplicationController
       true
     else
       verify_recaptcha(model: model)
-    end    
+    end
   end
 end

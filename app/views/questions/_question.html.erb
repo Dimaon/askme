@@ -5,7 +5,7 @@
 <div class="question">
   <div class="question-content">
     <div class="question-text text-lead">
-      <%= question.text %>
+      <%=raw question.text %>
     </div>
 
     <% if question.answer.present? %>
@@ -22,7 +22,6 @@
 
     <div class="question-date">
       <%= l(question.created_at, format: :short) %>
-
     </div>
 
     <% if question.user == current_user %>
@@ -34,7 +33,7 @@
     <% end %>
 
     <div class="tags">
-      <% uniq_hashtags(question).each do |tag| %>
+      <% question.hashtags.each do |tag| %>
         <span class="tag"><%= link_to tag.tag, questions_search_path(tag: tag.tag.delete('#'))  %></span>
       <% end %>
     </div>
