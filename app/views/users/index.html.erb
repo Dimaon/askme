@@ -21,7 +21,8 @@
 
   <div>
     <% @hashtags.each do |tag| %>
-      <span class="tag"><%= link_to tag.tag, questions_search_path(tag: tag.tag.delete('#')) %> </span>
+      <%= link_to tag.tag, questions_search_path(tag: tag.tag.delete('#')), { :class=>"tag" } if tag.questions.present? %>
     <% end %>
   </div>
+
 </div>

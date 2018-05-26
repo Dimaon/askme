@@ -8,47 +8,42 @@ class Question < ApplicationRecord
   validates :text, presence: true
   validates :text, length: { maximum: 255 }
 
-  after_save :update_tags
-
-  #TODO
-  #before_save :convert_tags_into_text
+  after_save :prepare_tags
 
   private
 
-  def update_tags
-    text = self.text.to_s + " " + self.answer.to_s
-    hash_tags_arr = text.scan(/#[^\!\?\.\s]+/)
-
+  def prepare_tags
     # Проверяем, есть ли вообще теги в тексте
-    if hash_tags_arr.any?
+    if text_to_tags.any?
       # Проходимся по массиву тегов и проверяем, есть ли тег в таблице тегов и таблице hashtags_questions
-      hash_tags_arr.each do |tag|
+      text_to_tags.each do |tag|
         # Пропускаем иттерацию, если тег уже есть
         next if self.hashtags.find_by(tag: tag)
-
-        # Добавлем найденный тег или создаем и добавлем тег, если его не было
-        hash_tag = Hashtag.find_by(tag: tag) || Hashtag.create(tag: tag)
-        self.hashtags << hash_tag
+        add_tag(tag)
       end
-
-      # удаляем теги из таблицы hashtags_questions, которых нету в тексте
-      self.hashtags.each do |t|
-         self.hashtags.delete(t) unless hash_tags_arr.include?(t.tag)
-      end
+      del_tags
     else
       # удаляем все теги, если их вообще не встретилось в тексте
       self.hashtags.delete_all
     end
   end
 
-  #TODO
-  # def convert_tags_into_text
-  #   string_arr = self.text.split
-  #   string_arr.each do |s|
-  #     if s.match(/#[^\!\?\.\s\,]+/)
-  #       self.text << "<span class='tag'>#{s}</span>"
-  #     end
-  #   end
-  # end
+  # Получаем из текста массив тегов
+  def text_to_tags
+    text = self.text.to_s + " " + self.answer.to_s
+    text.scan(/#[^\!\?\.\s]+/)
+  end
 
+  # удаляем теги из таблицы hashtags_questions, которых нету в тексте
+  def del_tags
+    self.hashtags.each do |t|
+      self.hashtags.delete(t) unless text_to_tags.include?(t.tag)
+    end
+  end
+
+  # Добавлем найденный тег или создаем и добавлем тег, если его не было
+  def add_tag(tag)
+    hash_tag = Hashtag.find_by(tag: tag) || Hashtag.create(tag: tag)
+    self.hashtags << hash_tag
+  end
 end

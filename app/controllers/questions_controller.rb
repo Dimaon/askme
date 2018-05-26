@@ -48,10 +48,6 @@ class QuestionsController < ApplicationController
     @question = Question.find(params[:id])
   end
 
-  # def add_hashtags
-  #   @question.create_tags_qa(@question.text, @question.answer)
-  # end
-
   def question_params
     # Защита от уязвимости: если текущий пользователь — адресат вопроса,
     # он может менять ответы на вопрос, ему доступно также поле :answer.

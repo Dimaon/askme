@@ -5,12 +5,12 @@
 <div class="question">
   <div class="question-content">
     <div class="question-text text-lead">
-      <%=raw question.text %>
+      <%=raw tag_to_link(question.text) %>
     </div>
 
     <% if question.answer.present? %>
       <div class="question-answer text-lead">
-        <%= question.answer if question.answer.present? %>
+        <%= raw tag_to_link(question.answer) %>
       </div>
     <% end %>
 
@@ -31,11 +31,5 @@
                     method: :delete, data: {confirm: 'Точно удалить вопрос?'} %>
       </div>
     <% end %>
-
-    <div class="tags">
-      <% question.hashtags.each do |tag| %>
-        <span class="tag"><%= link_to tag.tag, questions_search_path(tag: tag.tag.delete('#'))  %></span>
-      <% end %>
-    </div>
   </div>
 </div>
