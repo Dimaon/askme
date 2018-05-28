@@ -1,10 +1,9 @@
 class Question < ApplicationRecord
 
   belongs_to :user
-
   belongs_to :author, class_name: 'User', optional: true
-
   has_and_belongs_to_many :hashtags
+
   validates :text, presence: true
   validates :text, length: { maximum: 255 }
 
@@ -12,11 +11,16 @@ class Question < ApplicationRecord
 
   private
 
+  def text_with_tags
+    text = self.text.to_s + " " + self.answer.to_s
+    Hashtag.text_to_tags_ary(text)
+  end
+
   def prepare_tags
     # Проверяем, есть ли вообще теги в тексте
-    if text_to_tags.any?
+    if text_with_tags.any?
       # Проходимся по массиву тегов и проверяем, есть ли тег в таблице тегов и таблице hashtags_questions
-      text_to_tags.each do |tag|
+      text_with_tags.each do |tag|
         # Пропускаем иттерацию, если тег уже есть
         next if self.hashtags.find_by(tag: tag)
         add_tag(tag)
@@ -28,16 +32,10 @@ class Question < ApplicationRecord
     end
   end
 
-  # Получаем из текста массив тегов
-  def text_to_tags
-    text = self.text.to_s + " " + self.answer.to_s
-    text.scan(/#[^\!\?\.\s]+/)
-  end
-
   # удаляем теги из таблицы hashtags_questions, которых нету в тексте
   def del_tags
     self.hashtags.each do |t|
-      self.hashtags.delete(t) unless text_to_tags.include?(t.tag)
+      self.hashtags.delete(t) unless text_with_tags.include?(t.tag)
     end
   end
 
