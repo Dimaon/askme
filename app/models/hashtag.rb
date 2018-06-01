@@ -14,11 +14,11 @@ class Hashtag < ApplicationRecord
       tags_ary.each do |tag|
         # Пропускаем иттерацию, если тег уже есть
         next if question.hashtags.find_by(tag: tag)
-        self.add_tag(question, tag)
+        question.add_tag(tag)
       end
     else
       # удаляем все теги, если их вообще не встретилось в тексте
-      self.del_tags(question, tags_ary)
+      question.del_tags(tags_ary)
     end
   end
 
@@ -27,18 +27,4 @@ class Hashtag < ApplicationRecord
   def self.tags_to_ary(text_with_tags)
     text_with_tags.scan(/#[^\!\?\.\s]+/)
   end
-
-  # Добавлем найденный тег или создаем и добавлем тег, если его не было
-  def self.add_tag(question, tag)
-    hash_tag_to_add = self.find_by(tag: tag) || self.create(tag: tag)
-    question.hashtags << hash_tag_to_add
-  end
-
-  # удаляем теги из таблицы hashtags_questions, которых нету в тексте
-  def self.del_tags(question, tags_ary)
-    question.hashtags.each do |t|
-      question.hashtags.delete(t) unless tags_ary.include?(t.tag)
-    end
-  end
-
 end
