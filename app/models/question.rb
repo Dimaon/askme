@@ -15,8 +15,7 @@ class Question < ApplicationRecord
 
   # Добавлем найденный тег или создаем и добавлем тег, если его не было
   def add_tag(tag)
-    hash_tag_to_add = Hashtag.find_by(tag: tag) || Hashtag.create(tag: tag)
-    self.hashtags << hash_tag_to_add
+    self.hashtags << Hashtag.find_or_create_by(tag: tag)
   end
 
   # удаляем теги из таблицы hashtags_questions, которых нету в тексте
