@@ -24,6 +24,4 @@
     
  Рабочий проект расположен на хероку по адресу: [https://askmedimaon.herokuapp.com/](https://askmedimaon.herokuapp.com/)
  
- Автор приложения:
- 
- [Куликов Дмитрий](https://dimaon.github.io/cv/)
+ Автор приложения: [Куликов Дмитрий](https://dimaon.github.io/cv/)
